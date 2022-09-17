@@ -5,6 +5,9 @@ class Settings(BaseSettings):
     PORT: str
     BAUDRATE: int = 115200
 
+    KP: float
+    KD: float
+
     class Config:
         """Other configurations for env file."""
 
