@@ -7,6 +7,8 @@ from settings import Settings
 from llp import LLP, data_parser
 from controllers.pd import ProportionalDerivativeController
 
+import requests
+
 settings = Settings()
 
 input_queue = Queue(maxsize=10)
@@ -40,6 +42,9 @@ while True:
         for value in values:
             print(f"{value.name} Sensor: {value.value} with key {hex(value.key)}")
             if value.key == 0xA6:
-                print(pd.calculate(value.value))
+                requests.post(
+                    url="http://0.0.0.0:8080/temperature",
+                    json={"value": value.value}
+                )
 
     sleep(0.01)
