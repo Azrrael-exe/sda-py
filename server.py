@@ -14,12 +14,15 @@ settings = Settings()
 
 temperatures = []
 
+
 class Temperature(BaseModel):
     value: int
+
 
 @app.get("/")
 def read_root():
     return {"Hello": "World", "UTC": datetime.utcnow()}
+
 
 @app.post("/temperature")
 def pid_temperature(temperature: Temperature):
@@ -27,11 +30,13 @@ def pid_temperature(temperature: Temperature):
     temperatures.append(response)
     return response
 
+
 @app.get("/temperature")
 def get_temperature():
     return temperatures.pop(0) if len(temperatures) > 0 else []
 
+
 if __name__ == "__main__":
     uvicorn.run(
-        app, host="0.0.0.0", port=8080, loop="uvloop", workers=1, log_level="debug"
+        app, host="0.0.0.0", port=8080, loop="asyncio", workers=1, log_level="debug"
     )
